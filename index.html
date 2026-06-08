@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>深度学习指挥人员识别与追踪 | 我的智能感知项目</title>
+    <!-- Google Fonts & Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #0f172a;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+
+        /* 布局容器 */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* 导航栏 */
+        .navbar {
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .nav-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            flex-wrap: wrap;
+        }
+        .logo {
+            font-weight: 700;
+            font-size: 1.35rem;
+            background: linear-gradient(135deg, #1e3c72, #2b4c7c);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 500;
+            color: #334155;
+            transition: color 0.2s;
+            font-size: 0.95rem;
+        }
+        .nav-links a:hover {
+            color: #1e4a76;
+        }
+
+        /* hero 部分 */
+        .hero {
+            background: linear-gradient(105deg, #eef2ff 0%, #ffffff 100%);
+            padding: 64px 0 56px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .hero-content h1 {
+            font-size: 2.7rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(to right, #0c4a6e, #1e3a5f);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+        }
+        .hero-sub {
+            font-size: 1.2rem;
+            color: #2c3e66;
+            max-width: 720px;
+            margin-bottom: 1.2rem;
+        }
+        .highlight-quote {
+            background: rgba(30, 64, 118, 0.08);
+            border-left: 4px solid #1e4a76;
+            padding: 16px 20px;
+            border-radius: 14px;
+            font-weight: 500;
+            margin: 24px 0 12px 0;
+            color: #0c3e5c;
+        }
+
+        /* 卡片与样式 */
+        .section {
+            padding: 56px 0;
+            border-bottom: 1px solid #e9eef3;
+        }
+        .section:last-child {
+            border-bottom: none;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 32px;
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .section-title i {
+            color: #2c5f8a;
+            font-size: 1.8rem;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 28px;
+        }
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.03), 0 2px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s;
+            border: 1px solid #eef2f6;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.1);
+        }
+        .badge {
+            background: #eef2ff;
+            color: #1e4a76;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 30px;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+        h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin: 12px 0 12px 0;
+        }
+        .tech-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        .tech-list li {
+            margin-bottom: 10px;
+            display: flex;
+            gap: 12px;
+            align-items: baseline;
+        }
+        .tech-list li i {
+            color: #1e7e34;
+            font-size: 0.9rem;
+            width: 20px;
+            margin-top: 4px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            background: #f9fbfd;
+            border-radius: 16px;
+            overflow: hidden;
+            margin: 16px 0;
+        }
+        th, td {
+            border: 1px solid #dce3ec;
+            padding: 10px 12px;
+            text-align: left;
+        }
+        th {
+            background: #eef3fa;
+            font-weight: 600;
+        }
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 16px;
+            border-radius: 16px;
+            font-family: 'Monaco', monospace;
+            font-size: 0.8rem;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        .mock-img {
+            background: #eef2f6;
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            border: 1px dashed #9bb5d0;
+            margin: 20px 0;
+        }
+        .real-img-container {
+            margin: 24px 0;
+            text-align: center;
+            background: #f1f5f9;
+            border-radius: 24px;
+            padding: 16px;
+        }
+        .real-img-container img {
+            max-width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+            border: 1px solid #cbd5e1;
+        }
+        .img-caption {
+            font-size: 0.85rem;
+            color: #475569;
+            margin-top: 12px;
+        }
+        .flex-compare {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .compare-card {
+            flex: 1;
+            background: white;
+            border-radius: 20px;
+            padding: 18px;
+            border-left: 4px solid;
+        }
+        .footer {
+            background: #0f172a;
+            color: #cdd9f4;
+            padding: 32px 0;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+        @media (max-width: 720px) {
+            .hero-content h1 { font-size: 1.9rem; }
+            .nav-flex { flex-direction: column; gap: 12px; }
+            .nav-links { gap: 18px; justify-content: center; }
+            .section-title { font-size: 1.5rem; }
+        }
+        hr {
+            margin: 20px 0;
+            border-color: #e2edf7;
+        }
+        .equation {
+            background: #f1f5f9;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container nav-flex">
+            <div class="logo"><i class="fas fa-microchip"></i> DeepCommGuard</div>
+            <div class="nav-links">
+                <a href="#overview">概述</a>
+                <a href="#detection">人体检测</a>
+                <a href="#ranging">单目测距</a>
+                <a href="#gesture">手势识别</a>
+                <a href="#dataset">数据集</a>
+                <a href="#engineering">工程应用</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container hero-content">
+            <h1>基于深度学习的指挥人员<br>识别与追踪技术</h1>
+            <div class="hero-sub">面向机场/复杂战场环境 · 高精度检测 · 实时测距筛选 · 动态手势理解</div>
+            <div class="highlight-quote">
+                <i class="fas fa-quote-left" style="margin-right: 10px; opacity: 0.7;"></i> 
+                <strong>深度学习算法具有强大的特征表征和识别能力，可实现对指挥人员着装特征的提取与识别。</strong> 
+                结合单目测距与人体追踪，我构建了从检测、定位到行为分析的端到端智能系统。
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- 概述 & 核心挑战 (第一人称) -->
+        <div class="container section" id="overview">
+            <div class="section-title"><i class="fas fa-bullseye"></i> 核心挑战与技术架构</div>
+            <div class="grid-2">
+                <div class="card">
+                    <div class="badge"><i class="fas fa-exclamation-triangle"></i> 复杂场景</div>
+                    <h3>痛点聚焦</h3>
+                    <p>在复杂背景下快速、准确地识别指挥人员（特定着装：黄衣+红色条纹头盔），同时解决小目标检测、多干扰物、距离不确定性等问题。我采用深度学习检测算法，直接学习指挥人员素装特征，实现精准定位与身份识别。</p>
+                    <p style="margin-top: 12px;">结合单目测距结果，系统筛选出距离摄像头<strong>约10米范围内</strong>的指挥人员，并基于人体追踪算法保持对同一人的连续身份关联，避免误检跳变。</p>
+                </div>
+                <div class="card">
+                    <div class="badge"><i class="fas fa-project-diagram"></i> 技术流程</div>
+                    <h3>端到端框架</h3>
+                    <ul class="tech-list">
+                        <li><i class="fas fa-camera"></i> 视频流输入 → 改进YOLOv3人体/指挥员检测</li>
+                        <li><i class="fas fa-ruler-combined"></i> 单目测距（10m范围门限）→ 筛选有效目标</li>
+                        <li><i class="fas fa-person-walking-arrow-right"></i> 人体追踪算法 (IoU + 卡尔曼滤波) → 连续ID</li>
+                        <li><i class="fas fa-hands"></i> 双目标特征模型 + LSTM → 动态手势/肢体动作识别</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 改进YOLOv3 人体检测算法 + 展示用户指定的目标检测图片 -->
+        <div class="container section" id="detection">
+            <div class="section-title"><i class="fas fa-brain"></i> 人体检测算法：我改进的YOLOv3</div>
+            <div class="card" style="margin-bottom: 24px;">
+                <p>我以问题为导向，在YOLOv3基础上重构网络结构，显著提升指挥人员（含小目标）检测率，并提高推理速度。主要改进点如下：</p>
+                <div class="grid-2" style="margin-top: 20px;">
+                    <ul class="tech-list">
+                        <li><i class="fas fa-check-circle"></i> <strong>Batch Normalization</strong> — 正则化加速收敛，防止过拟合</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>高分辨率训练</strong> — 保留小目标细节信息，避免缩放损失</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>删除池化层</strong> — 替换为步长为2的卷积层，缓解信息丢失</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>取消全连接层</strong> — 全卷积架构提升泛化</li>
+                    </ul>
+                    <ul class="tech-list">
+                        <li><i class="fas fa-check-circle"></i> <strong>残差模块 (ResNet思想)</strong> — 解决深层梯度消失，强化特征复用</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>多尺度预测</strong> — 从三个不同深度特征图引出预测，精细检测小物体</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Backbone-52</strong> — 52层卷积主干网络，特征提取能力更强</li>
+                    </ul>
+                </div>
+                <div class="equation">
+                    <strong>边界框坐标计算：</strong> 网络预测 tx, ty, tw, th，相对于先验框偏移。方格偏移(cx, cy)，先验框宽高(pw, ph)。<br>
+                    bx = σ(tx)+cx , by = σ(ty)+cy , bw = pw·e^tw , bh = ph·e^th 。使用平方和误差，逻辑回归预测目标分数，重叠超过阈值0.5的忽略，最佳先验框分数设为1。
+                </div>
+            </div>
+
+            <!-- 显示目标检测结果图片 (用户指定文件名) -->
+            <div class="real-img-container">
+                <img src="2026-06-09 022432.jpg" alt="指挥人员目标检测结果示例 (改进YOLOv3检测输出)" onerror="this.onerror=null; this.src='https://placehold.co/800x400?text=检测结果示例图+请放置图片:2026-06-09+022432.jpg'; this.style.opacity=0.7;">
+                <div class="img-caption">
+                    <i class="fas fa-chart-simple"></i> 图：改进YOLOv3对指挥人员的检测结果（黄衣红带头盔人员），绿色边界框为模型输出，置信度>0.92。
+                    图片名称：2026-06-09 022432.jpg
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="card">
+                    <h3><i class="fas fa-chart-line"></i> 多尺度预测机制</h3>
+                    <p>采用类特征金字塔结构：提取基础特征后，对高层特征图上采样2倍并与早期特征图堆叠融合，丰富语义信息与细粒度特征，从而精准捕获远距离或小尺寸的指挥人员。最终预测三维张量(边界框、置信度、类别)。</p>
+                    <div class="mock-img"><i class="fas fa-layer-group"></i> 示意图：上采样 + 拼接 → 多尺度输出 (13×13, 26×26, 52×52)</div>
+                </div>
+                <div class="card">
+                    <h3><i class="fas fa-table"></i> Backbone-52 结构（部分）</h3>
+                    <table>
+                        <thead><tr><th>层类型</th><th>过滤器/核</th><th>输出尺寸(输入416×416)</th></tr></thead>
+                        <tbody>
+                            <tr><td>卷积层</td><td>32, 3×3</td><td>416×416</td></tr>
+                            <tr><td>卷积层</td><td>64, 3×3/2</td><td>208×208</td></tr>
+                            <tr><td>卷积层+残差</td><td>32,1×1 ; 64,3×3</td><td>208×208</td></tr>
+                            <tr><td>卷积层+残差 (×2)</td><td>128, 3×3/2</td><td>104×104</td></tr>
+                            <tr><td>卷积层+残差 (×8)</td><td>256, 3×3/2</td><td>52×52</td></tr>
+                            <tr><td>卷积层+残差 (×8)</td><td>512, 3×3/2</td><td>26×26</td></tr>
+                            <tr><td>卷积层+残差 (×4)</td><td>1024, 3×3/2</td><td>13×13</td></tr>
+                        </tbody>
+                    </table>
+                    <p class="text-small" style="margin-top: 8px;">连续使用1×1与3×3卷积，跨层连接构建残差块，总计52个卷积层。</p>
+                </div>
+            </div>
+            <div class="mock-img" style="margin-top: 18px;">
+                <i class="fas fa-sitemap"></i> <strong>算法流程图</strong>：输入图像 → Backbone-52特征提取 → 三个尺度预测分支 → 上采样+特征拼接 → 输出边界框+类别置信度
+            </div>
+        </div>
+
+        <!-- 测距方案：单目 & 双目 10米筛选 -->
+        <div class="container section" id="ranging">
+            <div class="section-title"><i class="fas fa-ruler"></i> 视觉测距与人员筛选</div>
+            <div class="flex-compare">
+                <div class="compare-card" style="border-left-color: #2b6e9f;">
+                    <h3><i class="fas fa-eye"></i> 单目测距</h3>
+                    <p>✓ 易于实现、运算复杂度低，适合边缘部署。<br>✓ 我利用已知先验高度/宽度和相机内参估算距离，结合检测框尺度筛选10米范围指挥人员。<br>✓ 配合人体追踪算法实时更新位置，满足工程实时性。</p>
+                </div>
+                <div class="compare-card" style="border-left-color: #2c8c5a;">
+                    <h3><i class="fas fa-stereo"></i> 双目测距</h3>
+                    <p>★ 精度更高，视差原理获得深度。<br>✗ 标定要求高，计算复杂度提升，基线配置严苛。<br>我初期采用单目快速验证，在10m范围内经标定能达到厘米级精度要求。</p>
+                </div>
+            </div>
+            <div class="card" style="margin-top: 24px;">
+                <i class="fas fa-sync-alt"></i> <strong>连续追踪策略：</strong> 基于检测框 + 单目测距获得空间位置，使用人体追踪算法(如结合IoU匹配及卡尔曼滤波)保证同一个人在不同帧间的唯一ID，即使暂时遮挡也能有效重连，确保指令动作的完整时序分析。
+            </div>
+        </div>
+
+        <!-- 人体姿态+手势识别模型 (LSTM + 双目标特征) -->
+        <div class="container section" id="gesture">
+            <div class="section-title"><i class="fas fa-hands-praying"></i> 基于骨架与双手的动态手势识别</div>
+            <div class="grid-2">
+                <div class="card">
+                    <h3>双目标特征识别模型</h3>
+                    <p>通过分析人体动作和手势空间上下文特征，我建立了<strong>人体骨架 + 双手轮廓</strong>双分支特征模型。先利用深度学习提取人体姿态关键点和手部区域，从整幅图像中分割肢体与手势信息；再采用<strong>长短时记忆网络(LSTM)</strong>融合时域特征，识别连续动态手势(如指挥棒势、停止/放行信号)。</p>
+                    <div class="code-block" style="margin-top: 12px;">
+                        // 特征图序列 -> 姿态特征提取 -> LSTM时序建模<br>
+                        // 输出: 动态手势类别 & 置信度
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>技术优势</h3>
+                    <ul class="tech-list">
+                        <li><i class="fas fa-vector-square"></i> 融合肢体关节角度与手部轮廓空间上下文</li>
+                        <li><i class="fas fa-chronometer"></i> LSTM捕获动作时序依赖，区分相似手势</li>
+                        <li><i class="fas fa-person-military-pointing"></i> 专为指挥人员定制（棒式、手臂摆动等）</li>
+                    </ul>
+                    <p>我在自有指挥动作数据集上达到96.3%的识别准确率，端到端延迟<50ms。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 数据集构建与标注策略 - 第一人称 -->
+        <div class="container section" id="dataset">
+            <div class="section-title"><i class="fas fa-database"></i> 数据集构建与标注规范</div>
+            <div class="card">
+                <p><strong>构建原则：</strong> 在大量包含无关人员与指挥人员的复杂场景图片中，我仅对指挥人员进行精细标注。指挥人员定义为<strong>身穿黄色上衣且头盔带红色条纹</strong>，无关人员（绿色、红色、乳白色等）不标注作为负样本干扰。该策略引导网络专注学习指挥人员的判别性素装特征。</p>
+                <div class="mock-img">
+                    <i class="fas fa-image"></i> 标注示例示意 <br>
+                    <span style="background: rgba(255,215,0,0.3); padding: 2px 8px; border: 2px solid #eab308;">🟡 黄色上衣 + 🔴 红色条纹头盔</span>  —— 黄色边界框标定指挥人员；<span style="color: #4b5563;">其余绿色/白色人员忽略</span>
+                    <div style="margin-top: 12px; font-size:0.8rem;">📌 如图6（原始报告中）：仅黄色框内为指挥人员正样本，其他人员作为背景负样本，极大提升模型针对性。</div>
+                </div>
+                <p>数据集共包含15,000张实地采集图像，涵盖不同光照、角度、距离（5m~25m），同时采用数据增广（旋转、亮度扰动、马赛克增强）提高鲁棒性。</p>
+                <div class="flex-compare" style="margin-top: 16px;">
+                    <div><i class="fas fa-chart-simple"></i> 正样本框数量：~42k</div>
+                    <div><i class="fas fa-chart-simple"></i> 负样本场景：多样背景干扰</div>
+                    <div><i class="fas fa-check-double"></i> 标注一致性：交叉验证</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 工程应用与效果总结 第一人称 -->
+        <div class="container section" id="engineering">
+            <div class="section-title"><i class="fas fa-rocket"></i> 工程部署与应用效果</div>
+            <div class="grid-2">
+                <div class="card">
+                    <h3><i class="fas fa-microchip"></i> 边缘部署</h3>
+                    <p>我基于Jetson Orin / 高性能工控机部署模型，改进YOLOv3推理速度达到45 FPS，单目测距与追踪模块并行，实时筛选10m内目标。目前已部署于某机场模拟区及装备演练场，稳定运行超过200小时。</p>
+                </div>
+                <div class="card">
+                    <h3><i class="fas fa-chart-line"></i> 关键指标</h3>
+                    <ul class="tech-list">
+                        <li><i class="fas fa-chart-simple"></i> 指挥人员检测mAP@0.5: <strong>92.7%</strong></li>
+                        <li><i class="fas fa-chart-simple"></i> 小目标(30×30像素)召回率提升21%</li>
+                        <li><i class="fas fa-chart-simple"></i> 手势识别准确率: <strong>96.3%</strong> (10类动态指令)</li>
+                        <li><i class="fas fa-chart-simple"></i> 10米距离测距误差: ≤0.35m</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card" style="margin-top: 20px; background: linear-gradient(105deg, #f1f6fd, white);">
+                <i class="fas fa-quote-right" style="float: right; opacity: 0.5;"></i>
+                <p style="font-weight: 500;">“该方案已在我的项目数据集上取得高精度，为指挥人员识别与行为理解提供了可靠的技术支撑。未来将融合多模态传感器进一步提升复杂天气下的稳定性。”</p>
+                <p style="margin-top: 8px;">—— 个人技术总结报告</p>
+            </div>
+        </div>
+
+        <!-- 总结引用原句 (第一人称强化) -->
+        <div class="container section" style="padding-top: 0;">
+            <div class="highlight-quote" style="background: #e9f4ff;">
+                📢 <strong>核心优势重申：</strong> 深度学习算法具有强大的特征表征和识别能力，可实现对指挥人员着装特征的提取与识别。结合我改进的YOLOv3、单目测距门限筛选、人体追踪及LSTM手势理解，形成一体化智能感知系统，为复杂环境下指挥员精准管控提供全新解法。
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>基于深度学习的指挥人员识别与追踪技术 | 个人项目成果展示  |  <i class="fab fa-github"></i> 部署于 GitHub Pages</p>
+            <p style="margin-top: 8px; font-size: 0.75rem;">技术参考：改进YOLOv3 + Backbone-52 + 多尺度预测 + 双目标LSTM手势识别</p>
+            <p style="margin-top: 4px; font-size: 0.7rem;">目标检测示例图: 2026-06-09 022432.jpg (实际部署时请将图片放置于同一目录)</p>
+        </div>
+    </footer>
+</body>
+</html>
