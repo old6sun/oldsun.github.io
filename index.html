@@ -302,14 +302,13 @@
                     <div class="badge"><i class="fas fa-exclamation-triangle"></i> 复杂场景</div>
                     <h3>痛点聚焦</h3>
                     <p>在复杂背景下快速、准确地识别指挥人员（特定着装：黄衣+红色条纹头盔），同时解决小目标检测、多干扰物、距离不确定性等问题。我采用深度学习检测算法，直接学习指挥人员素装特征，实现精准定位与身份识别。</p>
-                    <p style="margin-top: 12px;">结合单目测距结果，系统筛选出距离摄像头<strong>约10米范围内</strong>的指挥人员，并基于人体追踪算法保持对同一人的连续身份关联，避免误检跳变。</p>
                 </div>
                 <div class="card">
                     <div class="badge"><i class="fas fa-project-diagram"></i> 技术流程</div>
                     <h3>端到端框架</h3>
                     <ul class="tech-list">
                         <li><i class="fas fa-camera"></i> 视频流输入 → 改进YOLOv3人体/指挥员检测</li>
-                        <li><i class="fas fa-ruler-combined"></i> 单目测距（10m范围门限）→ 筛选有效目标</li>
+                        <li><i class="fas fa-ruler-combined"></i> 单目测距→ 筛选有效目标</li>
                         <li><i class="fas fa-person-walking-arrow-right"></i> 人体追踪算法 (IoU + 卡尔曼滤波) → 连续ID</li>
                         <li><i class="fas fa-hands"></i> 双目标特征模型 + LSTM → 动态手势/肢体动作识别</li>
                     </ul>
@@ -346,7 +345,6 @@
                 <img src="2026-06-09 022432.jpg" alt="指挥人员目标检测结果示例 (改进YOLOv3检测输出)" onerror="this.onerror=null; this.src='https://placehold.co/800x400?text=检测结果示例图+请放置图片:2026-06-09+022432.jpg'; this.style.opacity=0.7;">
                 <div class="img-caption">
                     <i class="fas fa-chart-simple"></i> 图：改进YOLOv3对指挥人员的检测结果（黄衣红带头盔人员），绿色边界框为模型输出，置信度>0.92。
-                    图片名称：2026-06-09 022432.jpg
                 </div>
             </div>
 
@@ -388,7 +386,7 @@
                 </div>
                 <div class="compare-card" style="border-left-color: #2c8c5a;">
                     <h3><i class="fas fa-stereo"></i> 双目测距</h3>
-                    <p>★ 精度更高，视差原理获得深度。<br>✗ 标定要求高，计算复杂度提升，基线配置严苛。<br>我初期采用单目快速验证，在10m范围内经标定能达到厘米级精度要求。</p>
+                    <p>★ 精度更高，视差原理获得深度。<br>✗ 标定要求高，计算复杂度提升，基线配置严苛。<br>我初期采用单目快速验证。</p>
                 </div>
             </div>
             <div class="card" style="margin-top: 24px;">
@@ -445,7 +443,7 @@
             <div class="grid-2">
                 <div class="card">
                     <h3><i class="fas fa-microchip"></i> 边缘部署</h3>
-                    <p>我基于Jetson Orin / 高性能工控机部署模型，改进YOLOv3推理速度达到45 FPS，单目测距与追踪模块并行，实时筛选10m内目标。目前已部署于某机场模拟区及装备演练场，稳定运行超过200小时。</p>
+                    <p>我基于Jetson Orin / 高性能工控机部署模型，改进YOLOv3推理速度达到45 FPS，单目测距与追踪模块并行。目前已部署于某机场模拟区及装备演练场，稳定运行超过200小时。</p>
                 </div>
                 <div class="card">
                     <h3><i class="fas fa-chart-line"></i> 关键指标</h3>
